@@ -11,4 +11,6 @@ interface CategoryRepositoryInterface
     public function updateCategory($category, $request, $fileName): void;
 
     public function getCategory(int $id);
+
+    public function deleteCategory($category): void;
 }
