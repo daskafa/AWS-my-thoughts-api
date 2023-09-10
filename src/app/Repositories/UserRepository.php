@@ -11,4 +11,9 @@ class UserRepository implements UserRepositoryInterface
     {
         User::create($request);
     }
+
+    public function getAuthUserRole(): string
+    {
+        return auth()->user()->role;
+    }
 }
