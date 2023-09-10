@@ -128,7 +128,7 @@ class CategoryService
         }
 
         try {
-            $category->delete();
+            $this->categoryRepository->deleteCategory($category);
 
             $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
 

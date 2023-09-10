@@ -32,4 +32,9 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return Category::find($id);
     }
+
+    public function deleteCategory($category): void
+    {
+        $category->delete();
+    }
 }
