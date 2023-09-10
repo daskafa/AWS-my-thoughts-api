@@ -8,7 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsAdminMiddleware
+class IsUserMiddleware
 {
     private UserRepositoryInterface $userRepository;
 
@@ -26,7 +26,7 @@ class IsAdminMiddleware
     {
         $authRole = $this->userRepository->getAuthUserRole();
 
-        if ($authRole !== CommonConstants::DEFAULT_ADMIN_ROLE) {
+        if ($authRole !== CommonConstants::DEFAULT_USER_ROLE) {
             return responseJson(
                 type: 'message',
                 message: CommonConstants::NOT_AUTHORIZED_ERROR_MESSAGE,

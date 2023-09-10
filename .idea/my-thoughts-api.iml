@@ -119,6 +119,10 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/sebastian/code-unit-reverse-lookup" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/sebastian/global-state" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/sebastian/object-reflector" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/aws/aws-sdk-php" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/aws/aws-crt-php" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/mtdowling/jmespath.php" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/league/flysystem-aws-s3-v3" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
