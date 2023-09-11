@@ -4,11 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
-use App\Interfaces\CategoryRepositoryInterface;
 use App\Services\CategoryService;
-use Exception;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
