@@ -128,9 +128,8 @@ class CategoryService
         }
 
         try {
+            $this->deleteCategoryAndThoughtFiles($category);
             $this->categoryRepository->deleteCategory($category);
-
-            $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
 
             return responseJson(
                 type: 'message',
@@ -143,5 +142,11 @@ class CategoryService
                 exceptionMessage: $exception->getMessage()
             );
         }
+    }
+
+    private function deleteCategoryAndThoughtFiles($category)
+    {
+        $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
+        $this->fileService->s3DeleteMultiple(fileNames: $category->thoughts->pluck('photo')->toArray(), path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
     }
 }

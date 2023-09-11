@@ -19,4 +19,9 @@ class Category extends Model
     {
         return Storage::disk('s3')->url(CommonConstants::CATEGORY_BANNER_S3_BASE_PATH . '/' . $this->banner);
     }
+
+    public function thoughts()
+    {
+        return $this->hasMany(Thought::class);
+    }
 }

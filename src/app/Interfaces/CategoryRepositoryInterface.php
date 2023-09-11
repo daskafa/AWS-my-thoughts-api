@@ -12,5 +12,5 @@ interface CategoryRepositoryInterface
 
     public function getCategory(int $id);
 
-    public function deleteCategory($category): void;
+    public function deleteCategory($category): bool;
 }

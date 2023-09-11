@@ -28,4 +28,9 @@ class Thought extends Model
     {
         return CommonConstants::THOUGHT_TYPES[$this->type];
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

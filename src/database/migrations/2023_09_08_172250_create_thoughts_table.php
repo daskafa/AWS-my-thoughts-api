@@ -21,8 +21,8 @@ return new class extends Migration
             $table->tinyInteger('type')->comment('1: Good Thought, 2: Bad Thought');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
         });
     }
 

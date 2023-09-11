@@ -19,8 +19,26 @@ class FileService
         return Storage::disk('s3')->delete($path . '/' . $fileName);
     }
 
+    public function s3DeleteMultiple(array $fileNames, $path)
+    {
+        $mergedUrls = $this->prepareAwsUrls($fileNames, $path);
+
+        return Storage::disk('s3')->delete($mergedUrls);
+    }
+
     private function fileName($file)
     {
         return time() . '_' . $file->getClientOriginalName();
+    }
+
+    private function prepareAwsUrls(array $fileNames, $path)
+    {
+        $mergedUrls = [];
+
+        foreach ($fileNames as $fileName) {
+            $mergedUrls[] = $path . '/' . $fileName;
+        }
+
+        return $mergedUrls;
     }
 }
