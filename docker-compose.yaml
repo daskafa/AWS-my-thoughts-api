@@ -22,8 +22,9 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: my_thoughts_api
-      MYSQL_ROOT_PASSWORD: mythoughtsapi
+      - MYSQL_DATABASE=my_thoughts_api
+      - MYSQL_ROOT_PASSWORD=mythoughtsapi
+      - "TZ=Europe/Istanbul"
 
   app:
     container_name: my_thoughts_api_app
