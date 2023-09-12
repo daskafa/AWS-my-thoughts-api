@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ThoughtController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,6 @@ Route::middleware(['auth:sanctum', 'isUser'])->group(function () {
         Route::post('store', [CommentController::class, 'store']);
         Route::delete('destroy/{id}', [CommentController::class, 'destroy']);
     });
+
+    Route::post('like-decider', [LikeController::class, 'likeDecider']);
 });

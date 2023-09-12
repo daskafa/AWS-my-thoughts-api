@@ -4,9 +4,16 @@ namespace App\Constants;
 
 class CommonConstants
 {
+    const BASE_MODEL_NAMESPACE = 'App\Models\\';
+
     const THOUGHT_TYPES = [
         1 => 'Good Thought',
         2 => 'Bad Thought',
+    ];
+
+    const LIKABLE_MODEL_NAMES = [
+        'comment' => self::BASE_MODEL_NAMESPACE . 'Comment',
+        'thought' => self::BASE_MODEL_NAMESPACE . 'Thought',
     ];
 
     const GENERAL_EXCEPTION_ERROR_MESSAGE = 'An unexpected error occurred. Please try again.';
