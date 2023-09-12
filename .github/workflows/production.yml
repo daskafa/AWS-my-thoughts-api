@@ -16,10 +16,12 @@ jobs:
 
       - name: Validate composer
         run: |
+          cd src
           composer validate
 
       - name: Install dependencies
         run: |
+          cd src
           composer install --optimize-autoloader --prefer-dist --no-progress --no-suggest
 
       - name: Configure AWS credentials
