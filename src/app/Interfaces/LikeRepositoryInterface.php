@@ -2,13 +2,16 @@
 
 namespace App\Interfaces;
 
+use App\Models\Comment;
+use App\Models\Thought;
+
 interface LikeRepositoryInterface
 {
-    public function getCollection($modelName, $id);
+    public function getCollection(string $modelName, int $id): Comment|Thought|null;
 
-    public function like($collection, $userId);
+    public function like(Comment|Thought $collection, int $userId): string;
 
-    public function unlike($collection, $userId);
+    public function unlike(Comment|Thought $collection, int $userId): string;
 
-    public function isLiked($collection, $userId);
+    public function isLiked(Comment|Thought $collection, int $userId): bool;
 }

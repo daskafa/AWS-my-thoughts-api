@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Constants\CommonConstants;
 use App\Interfaces\ThoughtRepositoryInterface;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ThoughtService
@@ -20,7 +22,7 @@ class ThoughtService
         $this->fileService = $fileService;
     }
 
-    public function getThoughts()
+    public function getThoughts(): JsonResponse
     {
         $thoughts = $this->thoughtRepository->getThoughts();
 
@@ -38,7 +40,7 @@ class ThoughtService
         );
     }
 
-    public function createThought($request)
+    public function createThought(Request $request): JsonResponse
     {
         try {
             if ($request->hasFile('photo')) {
@@ -60,7 +62,7 @@ class ThoughtService
         }
     }
 
-    public function getThought($id)
+    public function getThought(int $id): JsonResponse
     {
         $thought = $this->thoughtRepository->getThought($id);
 
@@ -78,7 +80,7 @@ class ThoughtService
         );
     }
 
-    public function updateThought($request, $id)
+    public function updateThought(Request $request, int $id): JsonResponse
     {
         try {
             $thought = $this->thoughtRepository->getThought($id);
@@ -114,7 +116,7 @@ class ThoughtService
         }
     }
 
-    public function deleteThought($id)
+    public function deleteThought(int $id): JsonResponse
     {
         try {
             $thought = $this->thoughtRepository->getThought($id);

@@ -4,15 +4,17 @@ namespace App\Repositories;
 
 use App\Interfaces\ThoughtRepositoryInterface;
 use App\Models\Thought;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class ThoughtRepository implements ThoughtRepositoryInterface
 {
-    public function getThoughts()
+    public function getThoughts(): Collection
     {
         return Thought::orderBy('created_at', 'desc')->get();
     }
 
-    public function createThought($request, $fileName): void
+    public function createThought(Request $request, string|null $fileName): void
     {
         Thought::create([
             'user_id' => auth()->id(),
@@ -24,7 +26,7 @@ class ThoughtRepository implements ThoughtRepositoryInterface
         ]);
     }
 
-    public function updateThought($thought, $request, $fileName): void
+    public function updateThought(Thought $thought, Request $request, string $fileName): void
     {
         $thought->update([
             'category_id' => $request->get('category_id'),
@@ -35,13 +37,13 @@ class ThoughtRepository implements ThoughtRepositoryInterface
         ]);
     }
 
-    public function getThought(int $id)
+    public function getThought(int $id): Thought|null
     {
         return Thought::find($id);
     }
 
-    public function deleteThought($thought): void
+    public function deleteThought(Thought $thought): bool
     {
-        $thought->delete();
+        return $thought->delete();
     }
 }

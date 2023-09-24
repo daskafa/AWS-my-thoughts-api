@@ -4,7 +4,10 @@ namespace App\Services;
 
 use App\Constants\CommonConstants;
 use App\Interfaces\CategoryRepositoryInterface;
+use App\Models\Category;
 use Exception;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryService
@@ -20,7 +23,7 @@ class CategoryService
         $this->fileService = $fileService;
     }
 
-    public function getCategories()
+    public function getCategories(): JsonResponse
     {
         $categories = $this->categoryRepository->getCategories();
 
@@ -38,7 +41,7 @@ class CategoryService
         );
     }
 
-    public function createCategory($request)
+    public function createCategory(Request $request): JsonResponse
     {
         try {
             if ($request->hasFile('banner')) {
@@ -58,10 +61,9 @@ class CategoryService
                 exceptionMessage: $exception->getMessage()
             );
         }
-
     }
 
-    public function getCategory(string $id)
+    public function getCategory(int $id): JsonResponse
     {
         $category = $this->categoryRepository->getCategory($id);
 
@@ -79,7 +81,7 @@ class CategoryService
         );
     }
 
-    public function updateCategory($request, string $id)
+    public function updateCategory(Request $request, int $id): JsonResponse
     {
         $category = $this->categoryRepository->getCategory($id);
 
@@ -115,7 +117,7 @@ class CategoryService
         }
     }
 
-    public function deleteCategory(string $id)
+    public function deleteCategory(int $id): JsonResponse
     {
         $category = $this->categoryRepository->getCategory($id);
 
@@ -144,9 +146,16 @@ class CategoryService
         }
     }
 
-    private function deleteCategoryAndThoughtFiles($category)
+    private function deleteCategoryAndThoughtFiles(Category $category): void
     {
-        $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
-        $this->fileService->s3DeleteMultiple(fileNames: $category->thoughts->pluck('photo')->toArray(), path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
+        $this->fileService->s3Delete(
+            fileName: $category->banner,
+            path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH
+        );
+
+        $this->fileService->s3DeleteMultiple(
+            fileNames: $category->thoughts->pluck('photo')->toArray(),
+            path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH
+        );
     }
 }

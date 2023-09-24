@@ -7,7 +7,7 @@ use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function createUser($request): void
+    public function createUser(array $request): void
     {
         User::create($request);
     }

@@ -2,11 +2,13 @@
 
 namespace App\Interfaces;
 
+use App\Models\Comment;
+
 interface CommentRepositoryInterface
 {
-    public function getComment(int $id);
+    public function getComment(int $id): Comment|null;
 
-    public function createComment($request): void;
+    public function createComment(array $request): void;
 
-    public function deleteComment(string $id);
+    public function deleteComment(Comment $comment): bool;
 }

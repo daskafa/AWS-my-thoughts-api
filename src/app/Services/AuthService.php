@@ -1,5 +1,7 @@
 <?php
 namespace App\Services;
+use App\Http\Requests\Api\AuthenticateRequest;
+use App\Http\Requests\Api\RegisterRequest;
 use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,13 +13,13 @@ class AuthService {
         $this->userRepository = $userRepository;
     }
 
-    public function register($request): void
+    public function register(RegisterRequest $request): void
     {
         $validatedRequest = $request->validated();
         $this->userRepository->createUser($validatedRequest);
     }
 
-    public function authenticate($request): array|string
+    public function authenticate(AuthenticateRequest $request): array|string
     {
         $email = $request->get('email');
         $password = $request->get('password');
@@ -34,7 +36,7 @@ class AuthService {
         return $this->createAuthToken();
     }
 
-    private function checkUser($email, $password): bool
+    private function checkUser(string $email, string $password): bool
     {
         if (!Auth::attempt(['email' => $email, 'password' => $password])) {
             return false;

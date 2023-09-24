@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Constants\CommonConstants;
 use App\Interfaces\CommentRepositoryInterface;
 use Exception;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class CommentService
@@ -16,7 +18,7 @@ class CommentService
         $this->commentRepository = $commentRepository;
     }
 
-    public function createComment($request)
+    public function createComment(Request $request): JsonResponse
     {
         $validatedRequest = $request->validated();
         $validatedRequest['user_id'] = auth()->id();
@@ -37,7 +39,7 @@ class CommentService
         }
     }
 
-    public function deleteComment(string $id)
+    public function deleteComment(int $id): JsonResponse
     {
         try {
             $comment = $this->commentRepository->getComment($id);

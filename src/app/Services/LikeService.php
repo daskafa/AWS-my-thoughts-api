@@ -4,7 +4,12 @@ namespace App\Services;
 
 use App\Constants\CommonConstants;
 use App\Interfaces\LikeRepositoryInterface;
+use App\Models\Comment;
+use App\Models\Thought;
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class LikeService
@@ -16,11 +21,11 @@ class LikeService
         $this->likeRepository = $likeRepository;
     }
 
-    public function likeDecider($request)
+    public function likeDecider(Request $request): JsonResponse
     {
         $id = $request->get('id');
-        $userId = $request->get('user_id');
-        $isLike = $request->get('is_like');
+        $userId = Auth::id();
+        $isLike = (int)$request->get('is_like');
         $type = $request->get('type');
 
         $modelName = CommonConstants::LIKABLE_MODEL_NAMES[$type];
@@ -62,28 +67,34 @@ class LikeService
         }
     }
 
-    private function makeDecision($isLike, $collection, $userId)
+    /**
+     * @throws Exception
+     */
+    private function makeDecision(bool $isLike, Comment|Thought $collection, int $userId): string|Exception
     {
-        return match ((int)$isLike) {
-            1 => $this->like($collection, $userId),
-            0 => $this->unlike($collection, $userId),
+        return match ($isLike) {
+            true => $this->like($collection, $userId),
+            false => $this->unlike($collection, $userId),
             default => throw new Exception('Invalid like value.'),
         };
     }
 
-    private function like($collection, $userId)
+    private function like(Comment|Thought $collection, int $userId): string
     {
         return $this->likeRepository->like($collection, $userId);
     }
 
-    private function unlike($collection, $userId)
+    private function unlike(Comment|Thought $collection, int $userId): string
     {
         return $this->likeRepository->unlike($collection, $userId);
     }
 
-    private function responseMessage($isLike)
+    /**
+     * @throws Exception
+     */
+    private function responseMessage(string $likedState): string|Exception
     {
-        return match ($isLike) {
+        return match ($likedState) {
             'liked' => 'Successfully liked.',
             'unliked' => 'Successfully unliked.',
             default => throw new Exception('Invalid like value.'),

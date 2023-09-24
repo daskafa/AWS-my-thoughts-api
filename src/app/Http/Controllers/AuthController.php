@@ -8,6 +8,7 @@ use App\Http\Requests\Api\RegisterRequest;
 use App\Services\AuthService;
 use Exception;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
@@ -19,7 +20,10 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
-    public function authenticate(AuthenticateRequest $request)
+    /**
+     * @throws ValidationException
+     */
+    public function authenticate(AuthenticateRequest $request): JsonResponse
     {
         $authToken = $this->authService->authenticate($request);
 
@@ -38,7 +42,7 @@ class AuthController extends Controller
         );
     }
 
-    public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request): JsonResponse
     {
         try {
             $this->authService->register($request);

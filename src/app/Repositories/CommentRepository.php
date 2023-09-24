@@ -7,18 +7,18 @@ use App\Models\Comment;
 
 class CommentRepository implements CommentRepositoryInterface
 {
-    public function createComment($request): void
+    public function createComment(array $request): void
     {
         Comment::create($request);
     }
 
-    public function getComment(int $id)
+    public function getComment(int $id): Comment|null
     {
         return Comment::find($id);
     }
 
-    public function deleteComment($comment): void
+    public function deleteComment($comment): bool
     {
-        $comment->delete();
+        return $comment->delete();
     }
 }

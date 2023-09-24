@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Api\LikeRequest;
 use App\Services\LikeService;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class LikeController extends Controller
 {
@@ -14,7 +15,7 @@ class LikeController extends Controller
         $this->likeService = $likeService;
     }
 
-    public function likeDecider(LikeRequest $request)
+    public function likeDecider(LikeRequest $request): JsonResponse
     {
         return $this->likeService->likeDecider($request);
     }
