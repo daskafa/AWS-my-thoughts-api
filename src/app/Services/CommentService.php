@@ -13,18 +13,19 @@ class CommentService
 {
     private CommentRepositoryInterface $commentRepository;
 
+    private array $storeData = [];
+
+    private int $destroyData;
+
     public function __construct(CommentRepositoryInterface $commentRepository)
     {
         $this->commentRepository = $commentRepository;
     }
 
-    public function createComment(Request $request): JsonResponse
+    public function createComment(): JsonResponse
     {
-        $validatedRequest = $request->validated();
-        $validatedRequest['user_id'] = auth()->id();
-
         try {
-            $this->commentRepository->createComment($validatedRequest);
+            $this->commentRepository->createComment($this->storeData);
 
             return responseJson(
                 type: 'message',
@@ -39,10 +40,10 @@ class CommentService
         }
     }
 
-    public function deleteComment(int $id): JsonResponse
+    public function deleteComment(): JsonResponse
     {
         try {
-            $comment = $this->commentRepository->getComment($id);
+            $comment = $this->commentRepository->getComment($this->destroyData);
 
             if (is_null($comment)) {
                 return responseJson(
@@ -65,5 +66,15 @@ class CommentService
                 exceptionMessage: $exception->getMessage()
             );
         }
+    }
+
+    public function setStoreData(array $data): void
+    {
+        $this->storeData = $data;
+    }
+
+    public function setDestroyData(int $id): void
+    {
+        $this->destroyData = $id;
     }
 }

@@ -28,9 +28,8 @@ class LikeService
         $isLike = (int)$request->get('is_like');
         $type = $request->get('type');
 
-        $modelName = CommonConstants::LIKABLE_MODEL_NAMES[$type];
-
         try {
+            $modelName = CommonConstants::LIKABLE_MODEL_NAMES[$type];
             $collection = $this->likeRepository->getCollection($modelName, $id);
 
             if (is_null($collection)) {
