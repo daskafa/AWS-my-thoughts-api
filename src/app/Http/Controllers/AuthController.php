@@ -25,7 +25,8 @@ class AuthController extends Controller
      */
     public function authenticate(AuthenticateRequest $request): JsonResponse
     {
-        $authToken = $this->authService->authenticate($request);
+        $this->prepareAndSetAuthenticateData($request);
+        $authToken = $this->authService->authenticate();
 
         if (is_array($authToken) && $authToken['status'] === Response::HTTP_UNPROCESSABLE_ENTITY) {
             throw ValidationException::withMessages([
@@ -45,7 +46,8 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         try {
-            $this->authService->register($request);
+            $this->prepareAndSetRegisterData($request);
+            $this->authService->register();
 
             return responseJson(
                 type: 'message',
@@ -58,5 +60,23 @@ class AuthController extends Controller
                 exceptionMessage: $exception->getMessage()
             );
         }
+    }
+
+    private function prepareAndSetAuthenticateData(AuthenticateRequest $request): void
+    {
+        $this->authService->setAuthenticateData(
+            $request->get('email'),
+            $request->get('password')
+        );
+    }
+
+    private function prepareAndSetRegisterData(RegisterRequest $request): void
+    {
+        $this->authService->setRegisterData(
+            $request->get('first_name'),
+            $request->get('last_name'),
+            $request->get('email'),
+            $request->get('password'),
+        );
     }
 }

@@ -7,24 +7,25 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthService {
     private UserRepositoryInterface $userRepository;
+    private array $authenticateData;
+    private array $registerData;
 
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function register(RegisterRequest $request): void
+    public function register(): void
     {
-        $validatedRequest = $request->validated();
-        $this->userRepository->createUser($validatedRequest);
+        $this->userRepository->createUser($this->registerData);
     }
 
-    public function authenticate(AuthenticateRequest $request): array|string
+    public function authenticate(): array|string
     {
-        $email = $request->get('email');
-        $password = $request->get('password');
-
-        $checkUser = $this->checkUser($email, $password);
+        $checkUser = $this->checkUser(
+            $this->authenticateData['email'],
+            $this->authenticateData['password']
+        );
 
         if (!$checkUser) {
             return [
@@ -48,5 +49,23 @@ class AuthService {
     private function createAuthToken(): string
     {
         return Auth::user()->createToken('auth_token')->plainTextToken;
+    }
+
+    public function setAuthenticateData(string $email, string $password): void
+    {
+        $this->authenticateData = [
+            'email' => $email,
+            'password' => $password,
+        ];
+    }
+
+    public function setRegisterData(string $firstName, string $lastName, string $email, string $password): void
+    {
+        $this->registerData = [
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $email,
+            'password' => $password,
+        ];
     }
 }
