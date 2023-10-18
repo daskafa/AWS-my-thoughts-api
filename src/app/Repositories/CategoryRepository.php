@@ -14,18 +14,18 @@ class CategoryRepository implements CategoryRepositoryInterface
         return Category::orderBy('created_at', 'desc')->get();
     }
 
-    public function createCategory(Request $request, string|null $fileName): void
+    public function createCategory(array $request, string|null $fileName): void
     {
         Category::create([
-            'title' => $request->get('title'),
+            'title' => $request['title'],
             'banner' => $fileName
         ]);
     }
 
-    public function updateCategory(Category $category, Request $request, string $fileName): void
+    public function updateCategory(Category $category, array $request, string $fileName): void
     {
         $category->update([
-            'title' => $request->get('title'),
+            'title' => $request['title'],
             'banner' => $fileName
         ]);
     }

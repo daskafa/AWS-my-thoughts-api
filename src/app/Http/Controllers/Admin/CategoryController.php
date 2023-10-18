@@ -22,7 +22,8 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): JsonResponse
     {
-        return $this->categoryService->createCategory($request);
+        $this->prepareAndSetStoreData($request);
+        return $this->categoryService->createCategory();
     }
 
     public function show(int $id): JsonResponse
@@ -32,11 +33,28 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, int $id): JsonResponse
     {
-        return $this->categoryService->updateCategory($request, $id);
+        $this->prepareAndSetUpdateData($request);
+        return $this->categoryService->updateCategory($id);
     }
 
     public function destroy(int $id): JsonResponse
     {
         return $this->categoryService->deleteCategory($id);
+    }
+
+    private function prepareAndSetStoreData(CategoryRequest $request): void
+    {
+        $this->categoryService->setStoreData(
+            $request->get('title'),
+            $request->file('banner')
+        );
+    }
+
+    private function prepareAndSetUpdateData(CategoryRequest $request): void
+    {
+        $this->categoryService->setUpdateData(
+            $request->get('title'),
+            $request->file('banner')
+        );
     }
 }

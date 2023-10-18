@@ -14,6 +14,8 @@ class CategoryService
 {
     private CategoryRepositoryInterface $categoryRepository;
     private FileService $fileService;
+    private array $storeData;
+    private array $updateData;
 
     public function __construct(
         CategoryRepositoryInterface $categoryRepository,
@@ -41,14 +43,12 @@ class CategoryService
         );
     }
 
-    public function createCategory(Request $request): JsonResponse
+    public function createCategory(): JsonResponse
     {
         try {
-            if ($request->hasFile('banner')) {
-                $fileName = $this->fileService->s3Upload(file: $request->file('banner'), path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
-            }
+            $fileName = $this->fileService->s3Upload(file: $this->storeData['banner'], path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
 
-            $this->categoryRepository->createCategory($request, $fileName ?? null);
+            $this->categoryRepository->createCategory($this->storeData, $fileName ?? null);
 
             return responseJson(
                 type: 'message',
@@ -81,7 +81,7 @@ class CategoryService
         );
     }
 
-    public function updateCategory(Request $request, int $id): JsonResponse
+    public function updateCategory(int $id): JsonResponse
     {
         $category = $this->categoryRepository->getCategory($id);
 
@@ -94,15 +94,10 @@ class CategoryService
         }
 
         try {
-            if ($request->hasFile('banner')) {
-                $fileName = $this->fileService->s3Upload(file: $request->file('banner'), path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
-            }
+            $fileName = $this->fileService->s3Upload(file: $this->updateData['banner'], path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
+            $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
 
-            if (isset($fileName)) {
-                $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
-            }
-
-            $this->categoryRepository->updateCategory($category, $request, $fileName ?? $category->banner);
+            $this->categoryRepository->updateCategory($category, $this->updateData, $fileName);
 
             return responseJson(
                 type: 'message',
@@ -157,5 +152,21 @@ class CategoryService
             fileNames: $category->thoughts->pluck('photo')->toArray(),
             path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH
         );
+    }
+
+    public function setStoreData(string $title, object $banner): void
+    {
+        $this->storeData = [
+            'title' => $title,
+            'banner' => $banner,
+        ];
+    }
+
+    public function setUpdateData(string $title, object $banner): void
+    {
+        $this->updateData = [
+            'title' => $title,
+            'banner' => $banner,
+        ];
     }
 }
