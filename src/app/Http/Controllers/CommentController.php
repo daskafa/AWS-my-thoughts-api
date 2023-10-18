@@ -17,19 +17,19 @@ class CommentController extends Controller
 
     public function store(CommentRequest $request): JsonResponse
     {
-        $this->prepareStoreData($request);
+        $this->prepareAndSetStoreData($request);
 
         return $this->commentService->createComment();
     }
 
     public function destroy(int $id): JsonResponse
     {
-        $this->prepareDestroyData($id);
+        $this->prepareAndSetDestroyData($id);
 
         return $this->commentService->deleteComment();
     }
 
-    public function prepareStoreData(CommentRequest $request): void
+    private function prepareAndSetStoreData(CommentRequest $request): void
     {
         $validated = $request->validated();
         $validated['user_id'] = auth()->id();
@@ -37,7 +37,7 @@ class CommentController extends Controller
         $this->commentService->setStoreData($validated);
     }
 
-    private function prepareDestroyData(int $id): void
+    private function prepareAndSetDestroyData(int $id): void
     {
         $this->commentService->setDestroyData($id);
     }
