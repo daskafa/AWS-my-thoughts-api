@@ -23,6 +23,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request): JsonResponse
     {
         $this->prepareAndSetStoreData($request);
+
         return $this->categoryService->createCategory();
     }
 
@@ -34,6 +35,7 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request, int $id): JsonResponse
     {
         $this->prepareAndSetUpdateData($request);
+
         return $this->categoryService->updateCategory($id);
     }
 

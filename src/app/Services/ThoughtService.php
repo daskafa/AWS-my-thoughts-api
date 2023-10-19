@@ -6,13 +6,14 @@ use App\Constants\CommonConstants;
 use App\Interfaces\ThoughtRepositoryInterface;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ThoughtService
 {
     private ThoughtRepositoryInterface $thoughtRepository;
     private FileService $fileService;
+    private array $storeData;
+    private array $updateData;
 
     public function __construct(
         ThoughtRepositoryInterface $thoughtRepository,
@@ -40,14 +41,12 @@ class ThoughtService
         );
     }
 
-    public function createThought(Request $request): JsonResponse
+    public function createThought(): JsonResponse
     {
         try {
-            if ($request->hasFile('photo')) {
-                $fileName = $this->fileService->s3Upload(file: $request->file('photo'), path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
-            }
+            $fileName = $this->fileService->s3Upload(file: $this->storeData['photo'], path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
 
-            $this->thoughtRepository->createThought($request, $fileName ?? null);
+            $this->thoughtRepository->createThought($this->storeData, $fileName ?? null);
 
             return responseJson(
                 type: 'message',
@@ -80,7 +79,7 @@ class ThoughtService
         );
     }
 
-    public function updateThought(Request $request, int $id): JsonResponse
+    public function updateThought(int $id): JsonResponse
     {
         try {
             $thought = $this->thoughtRepository->getThought($id);
@@ -93,15 +92,15 @@ class ThoughtService
                 );
             }
 
-            if ($request->hasFile('photo')) {
-                $fileName = $this->fileService->s3Upload(file: $request->file('photo'), path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
+            if (!is_null($this->updateData['photo'])) {
+                $fileName = $this->fileService->s3Upload(file: $this->updateData['photo'], path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
             }
 
             if (isset($fileName)) {
                 $this->fileService->s3Delete(fileName: $thought->photo, path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
             }
 
-            $this->thoughtRepository->updateThought($thought, $request, $fileName ?? $thought->photo);
+            $this->thoughtRepository->updateThought($thought, $this->updateData, $fileName ?? $thought->photo);
 
             return responseJson(
                 type: 'message',
@@ -144,5 +143,27 @@ class ThoughtService
                 exceptionMessage: $exception->getMessage()
             );
         }
+    }
+
+    public function setStoreData(int $categoryId, object $photo, string $title, string $content, int $type): void
+    {
+        $this->storeData = [
+            'category_id' => $categoryId,
+            'photo' => $photo,
+            'title' => $title,
+            'content' => $content,
+            'type' => $type,
+        ];
+    }
+
+    public function setUpdateData(int $categoryId, object|null $photo, string $title, string $content, int $type): void
+    {
+        $this->updateData = [
+            'category_id' => $categoryId,
+            'photo' => $photo,
+            'title' => $title,
+            'content' => $content,
+            'type' => $type,
+        ];
     }
 }

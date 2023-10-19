@@ -22,7 +22,9 @@ class ThoughtController extends Controller
 
     public function store(ThoughtRequest $request): JsonResponse
     {
-        return $this->thoughtService->createThought($request);
+        $this->prepareAndSetStoreData($request);
+
+        return $this->thoughtService->createThought();
     }
 
     public function show(int $id): JsonResponse
@@ -32,11 +34,35 @@ class ThoughtController extends Controller
 
     public function update(ThoughtRequest $request, int $id): JsonResponse
     {
-        return $this->thoughtService->updateThought($request, $id);
+        $this->prepareAndSetUpdateData($request);
+
+        return $this->thoughtService->updateThought($id);
     }
 
     public function destroy(int $id): JsonResponse
     {
         return $this->thoughtService->deleteThought($id);
+    }
+
+    private function prepareAndSetStoreData(ThoughtRequest $request): void
+    {
+        $this->thoughtService->setStoreData(
+            $request->get('category_id'),
+            $request->file('photo'),
+            $request->get('title'),
+            $request->get('content'),
+            $request->get('type')
+        );
+    }
+
+    private function prepareAndSetUpdateData(ThoughtRequest $request): void
+    {
+        $this->thoughtService->setUpdateData(
+            $request->get('category_id'),
+            $request->file('photo'),
+            $request->get('title'),
+            $request->get('content'),
+            $request->get('type')
+        );
     }
 }

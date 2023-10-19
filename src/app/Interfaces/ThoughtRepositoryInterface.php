@@ -10,9 +10,9 @@ interface ThoughtRepositoryInterface
 {
     public function getThoughts(): Collection;
 
-    public function createThought(Request $request, string|null $fileName): void;
+    public function createThought(array $request, string|null $fileName): void;
 
-    public function updateThought(Thought $thought, Request $request, string $fileName): void;
+    public function updateThought(Thought $thought, array $request, string $fileName): void;
 
     public function getThought(int $id): Thought|null;
 

@@ -14,26 +14,26 @@ class ThoughtRepository implements ThoughtRepositoryInterface
         return Thought::orderBy('created_at', 'desc')->get();
     }
 
-    public function createThought(Request $request, string|null $fileName): void
+    public function createThought(array $request, string|null $fileName): void
     {
         Thought::create([
             'user_id' => auth()->id(),
-            'category_id' => $request->get('category_id'),
+            'category_id' => $request['category_id'],
             'photo' => $fileName,
-            'title' => $request->get('title'),
-            'content' => $request->get('content'),
-            'type' => $request->get('type'),
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'type' => $request['type'],
         ]);
     }
 
-    public function updateThought(Thought $thought, Request $request, string $fileName): void
+    public function updateThought(Thought $thought, array $request, string $fileName): void
     {
         $thought->update([
-            'category_id' => $request->get('category_id'),
+            'category_id' => $request['category_id'],
             'photo' => $fileName,
-            'title' => $request->get('title'),
-            'content' => $request->get('content'),
-            'type' => $request->get('type'),
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'type' => $request['type'],
         ]);
     }
 
