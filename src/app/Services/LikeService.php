@@ -7,26 +7,25 @@ use App\Interfaces\LikeRepositoryInterface;
 use App\Models\Comment;
 use App\Models\Thought;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class LikeService
 {
     private LikeRepositoryInterface $likeRepository;
+    private array $likeDeciderData;
 
     public function __construct(LikeRepositoryInterface $likeRepository)
     {
         $this->likeRepository = $likeRepository;
     }
 
-    public function likeDecider(Request $request): JsonResponse
+    public function likeDecider(): JsonResponse
     {
-        $id = $request->get('id');
-        $userId = Auth::id();
-        $isLike = (int)$request->get('is_like');
-        $type = $request->get('type');
+        $id = $this->likeDeciderData['id'];
+        $userId = $this->likeDeciderData['userId'];
+        $isLike = $this->likeDeciderData['isLike'];
+        $type = $this->likeDeciderData['type'];
 
         try {
             $modelName = CommonConstants::LIKABLE_MODEL_NAMES[$type];
@@ -98,5 +97,15 @@ class LikeService
             'unliked' => 'Successfully unliked.',
             default => throw new Exception('Invalid like value.'),
         };
+    }
+
+    public function setLikeDeciderData(int $userId, int $id, int $isLike, string $type): void
+    {
+        $this->likeDeciderData = [
+            'userId' => $userId,
+            'id' => $id,
+            'isLike' => $isLike,
+            'type' => $type,
+        ];
     }
 }

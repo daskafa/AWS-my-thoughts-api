@@ -6,7 +6,6 @@ use App\Constants\CommonConstants;
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Models\Category;
 use Exception;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 

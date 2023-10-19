@@ -17,6 +17,18 @@ class LikeController extends Controller
 
     public function likeDecider(LikeRequest $request): JsonResponse
     {
-        return $this->likeService->likeDecider($request);
+        $this->prepareAndSetLikeDeciderData($request);
+
+        return $this->likeService->likeDecider();
+    }
+
+    private function prepareAndSetLikeDeciderData(LikeRequest $request): void
+    {
+        $this->likeService->setLikeDeciderData(
+            auth()->id(),
+            $request->get('id'),
+            $request->get('is_like'),
+            $request->get('type')
+        );
     }
 }

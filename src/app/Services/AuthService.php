@@ -1,7 +1,5 @@
 <?php
 namespace App\Services;
-use App\Http\Requests\Api\AuthenticateRequest;
-use App\Http\Requests\Api\RegisterRequest;
 use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
