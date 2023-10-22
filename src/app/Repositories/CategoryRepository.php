@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Interfaces\CategoryRepositoryInterface;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class CategoryRepository implements CategoryRepositoryInterface

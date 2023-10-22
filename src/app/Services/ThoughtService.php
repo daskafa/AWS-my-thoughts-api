@@ -6,7 +6,7 @@ use App\Constants\CommonConstants;
 use App\Interfaces\ThoughtRepositoryInterface;
 use App\Models\Thought;
 use Exception;
-use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ThoughtService
@@ -47,7 +47,7 @@ class ThoughtService
         try {
             $fileName = $this->fileService->s3Upload(file: $this->storeData['photo'], path: CommonConstants::THOUGHT_PHOTO_S3_BASE_PATH);
 
-            $this->thoughtRepository->createThought($this->storeData, $fileName ?? null);
+            $this->thoughtRepository->createThought($this->storeData, $fileName);
 
             return responseJson(
                 type: 'message',

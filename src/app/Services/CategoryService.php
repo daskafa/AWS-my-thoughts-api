@@ -47,7 +47,7 @@ class CategoryService
         try {
             $fileName = $this->fileService->s3Upload(file: $this->storeData['banner'], path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
 
-            $this->categoryRepository->createCategory($this->storeData, $fileName ?? null);
+            $this->categoryRepository->createCategory($this->storeData, $fileName);
 
             return responseJson(
                 type: 'message',

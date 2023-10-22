@@ -17,7 +17,7 @@ class LikeRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'id.required' => 'Unexpected error occurred. Please try again.',

@@ -24,7 +24,7 @@ class ThoughtRequest extends FormRequest
         return $ruleArray;
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'category_id.required' => 'Please select a category.',

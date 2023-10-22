@@ -8,7 +8,7 @@ class RegisterRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'first_name' => 'required',
@@ -18,7 +18,7 @@ class RegisterRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'first_name.required' => 'Please enter your first name.',

@@ -1,7 +1,9 @@
 <?php
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 if (!function_exists('responseJson')) {
-    function responseJson($type, $data = null, $message = null, $status = 200)
+    function responseJson(string $type, mixed $data = null, string $message = null, int $status = 200): JsonResponse
     {
         return match ($type) {
             'data' => response()->json([
@@ -22,7 +24,7 @@ if (!function_exists('responseJson')) {
 }
 
 if (!function_exists('exceptionResponseJson')) {
-    function exceptionResponseJson($message, $exceptionMessage)
+    function exceptionResponseJson(string $message, string $exceptionMessage): JsonResponse
     {
         return response()->json([
             'message' => $message,

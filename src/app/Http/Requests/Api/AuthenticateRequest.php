@@ -8,7 +8,7 @@ class AuthenticateRequest extends FormRequest
 {
     protected $stopOnFirstFailure = true;
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'email' => 'required|email',
@@ -16,7 +16,7 @@ class AuthenticateRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'email.required' => 'Please enter your email address.',

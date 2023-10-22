@@ -54,12 +54,11 @@ class LikeService
     /**
      * @throws Exception
      */
-    private function makeDecision(bool $isLike, Comment|Thought $collection, int $userId): string|Exception
+    private function makeDecision(bool $isLike, Comment|Thought $collection, int $userId): string
     {
         return match ($isLike) {
             true => $this->like($collection, $userId),
             false => $this->unlike($collection, $userId),
-            default => throw new Exception('Invalid like value.'),
         };
     }
 
@@ -76,12 +75,11 @@ class LikeService
     /**
      * @throws Exception
      */
-    private function responseMessage(string $likedState): string|Exception
+    private function responseMessage(string $likedState): string
     {
         return match ($likedState) {
             'liked' => 'Successfully liked.',
             'unliked' => 'Successfully unliked.',
-            default => throw new Exception('Invalid like value.'),
         };
     }
 
@@ -105,7 +103,7 @@ class LikeService
         return array($id, $userId, $isLike, $type);
     }
 
-    private function checkAndRetrieveCollection(string $type, int $id, int $userId, int $isLike): Comment|Thought|ValidationException
+    private function checkAndRetrieveCollection(string $type, int $id, int $userId, int $isLike): Comment|Thought
     {
         $modelName = CommonConstants::LIKABLE_MODEL_NAMES[$type];
 

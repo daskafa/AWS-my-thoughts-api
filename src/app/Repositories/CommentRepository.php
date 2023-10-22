@@ -17,7 +17,7 @@ class CommentRepository implements CommentRepositoryInterface
         return Comment::find($id);
     }
 
-    public function deleteComment($comment): bool
+    public function deleteComment(Comment $comment): bool
     {
         return $comment->delete();
     }

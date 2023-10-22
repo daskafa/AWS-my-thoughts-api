@@ -16,7 +16,7 @@ class CommentRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'thought_id.required' => 'Thought information could not be found.',
