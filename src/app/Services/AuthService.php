@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Services;
+
 use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 
-class AuthService {
+class AuthService
+{
     private UserRepositoryInterface $userRepository;
     private array $authenticateData;
     private array $registerData;

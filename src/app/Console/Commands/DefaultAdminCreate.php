@@ -28,13 +28,13 @@ class DefaultAdminCreate extends Command
      */
     public function handle()
     {
-        if (is_null($this->option('email'))){
+        if (is_null($this->option('email'))) {
             $this->info('Please provide an email using the --email option.');
 
             return;
         }
 
-        if (is_null($this->option('password'))){
+        if (is_null($this->option('password'))) {
             $this->info('Please provide a password using the --password option.');
 
             return;
