@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Constants\CommonConstants;
+use App\Exceptions\ValidationException;
 use App\Interfaces\LikeRepositoryInterface;
 use App\Models\Comment;
 use App\Models\Thought;
@@ -22,33 +23,10 @@ class LikeService
 
     public function likeDecider(): JsonResponse
     {
-        $id = $this->likeDeciderData['id'];
-        $userId = $this->likeDeciderData['userId'];
-        $isLike = $this->likeDeciderData['isLike'];
-        $type = $this->likeDeciderData['type'];
+        [$id, $userId, $isLike, $type] = $this->likeDeciderExtracted();
 
         try {
-            $modelName = CommonConstants::LIKABLE_MODEL_NAMES[$type];
-            $collection = $this->likeRepository->getCollection($modelName, $id);
-
-            if (is_null($collection)) {
-                return responseJson(
-                    type: 'message',
-                    message: 'Resource not found.',
-                    status: Response::HTTP_NOT_FOUND
-                );
-            }
-
-            $checkIfLiked = $this->likeRepository->isLiked($collection, $userId);
-
-            if ($checkIfLiked && $isLike) {
-                return responseJson(
-                    type: 'message',
-                    message: 'You already liked this.',
-                    status: Response::HTTP_BAD_REQUEST
-                );
-            }
-
+            $collection = $this->checkAndRetrieveCollection($type, $id, $userId, $isLike);
             $likedState = $this->makeDecision($isLike, $collection, $userId);
             $responseMessage = $this->responseMessage($likedState);
 
@@ -58,6 +36,14 @@ class LikeService
                 status: Response::HTTP_OK
             );
         } catch (Exception $exception) {
+            if ($exception instanceof ValidationException) {
+                return responseJson(
+                    type: 'message',
+                    message: $exception->getMessage(),
+                    status: $exception->getCode()
+                );
+            }
+
             return exceptionResponseJson(
                 message: CommonConstants::GENERAL_EXCEPTION_ERROR_MESSAGE,
                 exceptionMessage: $exception->getMessage()
@@ -107,5 +93,34 @@ class LikeService
             'isLike' => $isLike,
             'type' => $type,
         ];
+    }
+
+    public function likeDeciderExtracted(): array
+    {
+        $id = $this->likeDeciderData['id'];
+        $userId = $this->likeDeciderData['userId'];
+        $isLike = $this->likeDeciderData['isLike'];
+        $type = $this->likeDeciderData['type'];
+
+        return array($id, $userId, $isLike, $type);
+    }
+
+    private function checkAndRetrieveCollection(string $type, int $id, int $userId, int $isLike): Comment|Thought|ValidationException
+    {
+        $modelName = CommonConstants::LIKABLE_MODEL_NAMES[$type];
+
+        $collection = $this->likeRepository->getCollection($modelName, $id);
+
+        if (is_null($collection)) {
+            throw new ValidationException('Resource not found.', Response::HTTP_NOT_FOUND);
+        }
+
+        $checkIfLiked = $this->likeRepository->isLiked($collection, $userId);
+
+        if ($checkIfLiked && $isLike) {
+            throw new ValidationException('You already liked this.', Response::HTTP_BAD_REQUEST);
+        }
+
+        return $collection;
     }
 }

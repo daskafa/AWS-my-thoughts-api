@@ -93,9 +93,7 @@ class CategoryService
         }
 
         try {
-            $fileName = $this->fileService->s3Upload(file: $this->updateData['banner'], path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
-            $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
-
+            $fileName = $this->s3UploadAndDelete($category);
             $this->categoryRepository->updateCategory($category, $this->updateData, $fileName);
 
             return responseJson(
@@ -167,5 +165,13 @@ class CategoryService
             'title' => $title,
             'banner' => $banner,
         ];
+    }
+
+    public function s3UploadAndDelete(Category $category): string
+    {
+        $fileName = $this->fileService->s3Upload(file: $this->updateData['banner'], path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
+        $this->fileService->s3Delete(fileName: $category->banner, path: CommonConstants::CATEGORY_BANNER_S3_BASE_PATH);
+
+        return $fileName;
     }
 }

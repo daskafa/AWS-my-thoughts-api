@@ -134,6 +134,8 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/barryvdh/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/barryvdh/laravel-ide-helper" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpdocumentor/reflection-common" />
+      <excludeFolder url="file://$MODULE_DIR$/src/storage/app" />
+      <excludeFolder url="file://$MODULE_DIR$/src/storage/framework" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
