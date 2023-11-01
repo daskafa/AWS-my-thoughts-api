@@ -124,7 +124,6 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/mtdowling/jmespath.php" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/league/flysystem-aws-s3-v3" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/laravel/telescope" />
-      <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpstan/phpdoc-parser" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpdocumentor/type-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/doctrine/deprecations" />
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/doctrine/event-manager" />
@@ -136,6 +135,13 @@
       <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpdocumentor/reflection-common" />
       <excludeFolder url="file://$MODULE_DIR$/src/storage/app" />
       <excludeFolder url="file://$MODULE_DIR$/src/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/pdepend/pdepend" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpmd/phpmd" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/phpstan/phpstan" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/config" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/dependency-injection" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/filesystem" />
+      <excludeFolder url="file://$MODULE_DIR$/src/vendor/symfony/var-exporter" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
